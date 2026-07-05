@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آرشیو مطالب | مجله من</title>
+    <meta name="description" content="آرشیو کامل مطالب مجله من">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            direction: rtl;
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            color: #1a73e8;
+        }
+        
+        .header .count {
+            color: #888;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .back-home {
+            display: inline-block;
+            margin-top: 10px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-home:hover {
+            text-decoration: underline;
+        }
+        
+        .archive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .archive-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        
+        .archive-item:hover {
+            transform: translateX(-5px);
+        }
+        
+        .archive-item .title {
+            font-size: 16px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .archive-item .title:hover {
+            text-decoration: underline;
+        }
+        
+        .archive-item .date {
+            color: #888;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .pagination a, .pagination span {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1a73e8;
+            font-weight: 500;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        
+        .pagination .active {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .pagination a:hover {
+            background: #e8f0fe;
+        }
+        
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 30px;
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+        }
+        
+        .footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .archive-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .archive-item .date {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 آرشیو مطالب</h1>
+            <div class="count" id="postCount">تعداد کل مطالب: ۰</div>
+            <a href="index.html" class="back-home">← بازگشت به صفحه اصلی</a>
+        </div>
+        
+        <div class="archive-list" id="archiveList">
+            <!-- توسط JavaScript بارگذاری می‌شود -->
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- صفحه‌بندی توسط JavaScript -->
+        </div>
+        
+        <footer class="footer">
+            <p>© ۱۴۰۵ - تمام حقوق محفوظ است | <a href="index.html">صفحه اصلی</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        const postsPerPage = 20;
+        let currentPage = 1;
+        let allPosts = [];
+        
+        // دریافت پارامترهای URL
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                page: parseInt(params.get('page')) || 1,
+                query: params.get('q') || ''
+            };
+        }
+        
+        // بارگذاری پست‌ها
+        async function loadArchive() {
+            try {
+                const response = await fetch('search.json');
+                const data = await response.json();
+                allPosts = data.posts;
+                
+                const params = getUrlParams();
+                currentPage = params.page;
+                const query = params.query.trim().toLowerCase();
+                
+                // فیلتر بر اساس جستجو
+                let filteredPosts = allPosts;
+                if (query) {
+                    filteredPosts = allPosts.filter(post => 
+                        post.title.toLowerCase().includes(query) ||
+                        post.content.toLowerCase().includes(query) ||
+                        post.summary.toLowerCase().includes(query)
+                    );
+                }
+                
+                // نمایش تعداد
+                document.getElementById('postCount').textContent = `تعداد کل مطالب: ${filteredPosts.length}`;
+                
+                // صفحه‌بندی
+                const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+                if (currentPage > totalPages) currentPage = totalPages || 1;
+                
+                const startIndex = (currentPage - 1) * postsPerPage;
+                const endIndex = startIndex + postsPerPage;
+                const pagePosts = filteredPosts.slice(startIndex, endIndex);
+                
+                // نمایش پست‌ها
+                const archiveList = document.getElementById('archiveList');
+                if (pagePosts.length === 0) {
+                    archiveList.innerHTML = '<p style="text-align:center;color:#888;padding:40px 0;">نتیجه‌ای یافت نشد</p>';
+                } else {
+                    archiveList.innerHTML = pagePosts.map(post => `
+                        <div class="archive-item">
+                            <a href="${post.url}" class="title">${post.title}</a>
+                            <span class="date">📅 ${post.date}</span>
+                        </div>
+                    `).join('');
+                }
+                
+                // صفحه‌بندی
+                renderPagination(totalPages, query);
+                
+            } catch (error) {
+                console.error('خطا:', error);
+                document.getElementById('archiveList').innerHTML = '<p style="text-align:center;color:#888;">خطا در بارگذاری مطالب</p>';
+            }
+        }
+        
+        // رندر صفحه‌بندی
+        function renderPagination(totalPages, query) {
+            const pagination = document.getElementById('pagination');
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            const queryParam = query ? `&q=${encodeURIComponent(query)}` : '';
+            
+            // صفحه قبلی
+            if (currentPage > 1) {
+                html += `<a href="?page=${currentPage - 1}${queryParam}">‹ قبلی</a>`;
+            }
+            
+            // شماره صفحات
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    html += `<span class="active">${i}</span>`;
+                } else if (i <= 3 || i > totalPages - 3 || Math.abs(i - currentPage) <= 1) {
+                    html += `<a href="?page=${i}${queryParam}">${i}</a>`;
+                } else if (i === 4 && currentPage > 5) {
+                    html += `<span>...</span>`;
+                } else if (i === totalPages - 3 && currentPage < totalPages - 4) {
+                    html += `<span>...</span>`;
+                }
+            }
+            
+            // صفحه بعدی
+            if (currentPage < totalPages) {
+                html += `<a href="?page=${currentPage + 1}${queryParam}">بعدی ›</a>`;
+            }
+            
+            pagination.innerHTML = html;
+        }
+        
+        // بارگذاری اولیه
+        loadArchive();
+    </script>
+</body>
+</html>
