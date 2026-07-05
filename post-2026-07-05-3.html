@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوست عزیز، اینبار دقیقاً می‌دونم چی می‌خوای: جمع‌آ</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            max-width: 800px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            line-height: 1.8; 
+            background: #f5f5f5; 
+            direction: rtl;
+        }
+        .post { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .date { 
+            color: #888; 
+            font-size: 14px; 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px;
+        }
+        .content { 
+            margin-top: 20px; 
+            white-space: pre-wrap; 
+            word-wrap: break-word;
+        }
+        .footer { 
+            margin-top: 30px; 
+            color: #aaa; 
+            font-size: 12px; 
+            text-align: center; 
+            border-top: 1px solid #eee; 
+            padding-top: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <div class="date">📅 ۱۴۰۵/۴/۱۴ - ۱۱:۰۵:۳۷</div>
+        <div class="content">دوست عزیز، اینبار دقیقاً می‌دونم چی می‌خوای: جمع‌آوری کامنت اینستاگرام به تعداد زیاد و بدون api_hash. بریم سراغ ابزارهایی که با ترموکس و بدون نیاز به لاگین کار می‌کنن:
+
+📊 جدول ابزارهای جمع‌آوری کامنت اینستاگرام (بدون api_hash)
+
+ابزار نوع اطلاعات نیاز به لاگین اجرا در ترموکس هزینه ویژگی خاص
+drawrowfly/instagram-scraper  ✅ کامنت + لایک‌کنندگان ❌ خیر ✅ بله (Node.js) رایگان پشتیبانی از هشتگ و لوکیشن
+OsintifyX  ✅ کامنت + کاربران کامنت‌گذار ✅ بله (حساب فیک) ✅ بله (Python) رایگان ۱۶ ماژول مختلف، مخصوص ترموکس
+Apify Comments Scraper  ✅ کامنت با متادیتای غنی ❌ خیر ✅ بله (API) ۱.۵$/۱۰۰۰ نتیجه دقت بالا، بدون بلاک شدن
+افزونه کروم v-User  ✅ یوزرنیم کامنت‌گذاران ❌ خیر ❌ خیر رایگان ساده‌ترین راه برای استخراج نام کاربری
+Instagram Data Scraper  ✅ کامنت + آنالیز تعامل ✅ بله ✅ بله (Python) رایگان پروکسی خودکار، ۱۲۰۰ پروفایل/ساعت
+
+---
+
+🛠️ روش‌های عملی برای ترموکس
+
+گزینه A: OsintifyX (مناسب‌ترین برای ترموکس) ⭐⭐⭐
+
+این ابزار دقیقاً برای ترموکس ساخته شده و کامنت‌ها رو به همراه اطلاعات کامل استخراج می‌کنه :
+
+# نصب در ترموکس
+apt-get update -y
+apt-get upgrade -y
+apt-get install git python python-pip -y
+pip install instaloader tabulate
+
+# کلون کردن ابزار
+git clone https://github.com/MrHacker-X/OsintifyX.git
+cd OsintifyX
+
+# تنظیم حساب اینستاگرام فیک (اختیاری)
+nano credx.py
+# username و password رو بذار
+
+# اجرا
+python osintifyx.py
+منوی ابزار برای کامنت:
+
+· گزینه ۱۲: Comment User - دریافت لیست کاربرانی که کامنت گذاشتن
+· گزینه ۱۳: Comments - دریافت تمام کامنت‌های یک پست
+· گزینه ۱۴: Liked Users - دریافت لیست لایک‌کنندگان
+
+خروجی: شامل متن کامنت، زمان، یوزرنیم کاربر، و اطلاعات پروفایل
+
+گزینه B: drawrowfly/instagram-scraper (Node.js) ⭐⭐
+
+ابزار محبوب با قابلیت استخراج کامنت بدون نیاز به لاگین :
+
+# نصب Node.js در ترموکس
+pkg install nodejs git
+
+# کلون کردن ابزار
+git clone https://github.com/drawrowfly/instagram-scraper
+cd instagram-scraper
+
+# نصب وابستگی‌ها
+npm install
+
+# استخراج کامنت از یک پست خاص
+node index.js post -u https://www.instagram.com/p/ABC123/ -c 500
+
+# استخراج کامنت از هشتگ خاص
+node index.js hashtag -n برنامه‌نویسی -c 1000 --include-comments
+قابلیت‌ها:
+
+· استخراج کامنت‌ها به همراه تاریخ و زمان
+· دریافت لیست لایک‌کنندگان
+· خروجی JSON قابل پردازش
+· بدون نیاز به هیچ کلیدی 
+
+گزینه C: Instagram Data Scraper (پایتون) ⭐⭐
+
+ابزار حرفه‌ای با سرعت بالا و پروکسی خودکار :
+
+# نصب
+git clone https://github.com/Instagram-Automations/instagram-data-scraper
+cd instagram-data-scraper
+pip install -r requirements.txt
+
+# تنظیم پروکسی (اختیاری)
+cp .env.example .env
+nano .env  # پروکسی رو تنظیم کن
+
+# اجرا برای کامنت
+python main.py --mode comments --url https://www.instagram.com/p/ABC123/
+ویژگی‌ها:
+
+· سرعت ۱۲۰۰ پروفایل در ساعت 
+· پروکسی روتاری خودکار هر ۱۵ درخواست
+· دقت ۹۸٪ در استخراج
+
+---
+
+☁️ گزینه‌های ابری (بدون نصب)
+
+Apify Comments Scraper ⭐⭐⭐
+
+اگر به دنبال دقت و سرعت بالا هستی و هزینه برات مهم نیست :
+
+# نصب Apify CLI در ترموکس
+npm install -g apify-cli
+
+# اجرای اکشن کامنت
+apify call data-slayer/instagram-comments-scraper-no-login-required \
+  --input '{"postUrl": "https://www.instagram.com/p/ABC123/"}'
+هزینه: ۱.۵ دلار به ازای هر ۱۰۰۰ کامنت 
+مزایا:بدون بلاک شدن، متادیتای غنی، خروجی JSON
+
+Bright Data MCP Server ⭐⭐
+
+سرویس حرفه‌ای با پلن رایگان ۵۰۰۰ ریکوئست ماهانه :
+
+# تنظیم MCP server
+npx mcp-remote https://mcp.brightdata.com/instagram \
+  --header "Authorization: Bearer YOUR_TOKEN"
+پلن رایگان: ۵۰۰۰ ریکوئست در ماه
+مناسب برای:پروژه‌های آزمایشی و حجم کم
+
+---
+
+📊 مقایسه نهایی روش‌ها
+
+روش نیاز به api_hash سرعت حجم کامنت هزینه اجرا در ترموکس
+OsintifyX  ❌ خیر ⚡ متوسط نامحدود رایگان ✅ بله
+drawrowfly  ❌ خیر ⚡⚡ بالا نامحدود رایگان ✅ بله
+Instagram Data Scraper  ❌ خیر ⚡⚡⚡ بسیار بالا نامحدود رایگان ✅ بله
+Apify  ❌ خیر ⚡⚡⚡ بسیار بالا بر اساس هزینه ۱.۵$/۱۰۰۰ ✅ بله (API)
+Bright Data  ❌ خیر ⚡⚡⚡ بسیار بالا ۵۰۰۰/ماه رایگان پولی/رایگان ✅ بله
+
+---
+
+🎯 جمع‌بندی نهایی برای تو
+
+با توجه به ابزارهایی که داری (ترموکس) و نیازت (کامنت اینستاگرام به تعداد زیاد بدون api_hash):
+
+✅ بهترین گزینه برای شروع:
+
+از drawrowfly/instagram-scraper استفاده کن :</div>
+        <div class="footer">منتشر شده از طریق ربات تلگرام</div>
+    </div>
+</body>
+</html>
